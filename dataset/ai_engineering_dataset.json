@@ -1,0 +1,242 @@
+[
+  {
+    "instruction": "What is Retrieval Augmented Generation?",
+    "response": "Retrieval Augmented Generation, or RAG, combines information retrieval with a language model. Relevant documents are retrieved from a knowledge base and provided as context to the model before generating an answer."
+  },
+  {
+    "instruction": "Why is RAG useful?",
+    "response": "RAG improves factual accuracy by grounding responses in retrieved documents. It reduces hallucinations and enables models to answer questions about private or domain-specific knowledge."
+  },
+  {
+    "instruction": "What is chunking in RAG?",
+    "response": "Chunking is the process of splitting documents into smaller pieces before creating embeddings. Smaller chunks improve retrieval precision and help fit context windows."
+  },
+  {
+    "instruction": "What are embeddings?",
+    "response": "Embeddings are dense numerical vector representations of text. Similar meanings are mapped to nearby points in vector space, enabling semantic search."
+  },
+  {
+    "instruction": "Why are embeddings important in RAG?",
+    "response": "Embeddings allow semantic retrieval. Instead of matching keywords, systems retrieve documents based on meaning and context."
+  },
+  {
+    "instruction": "What is a vector database?",
+    "response": "A vector database stores embeddings and supports similarity search operations such as cosine similarity or nearest neighbor retrieval."
+  },
+  {
+    "instruction": "What is cosine similarity?",
+    "response": "Cosine similarity measures the angle between two vectors. In retrieval systems it is commonly used to determine semantic similarity between embeddings."
+  },
+  {
+    "instruction": "What is Maximum Marginal Relevance?",
+    "response": "Maximum Marginal Relevance, or MMR, balances relevance and diversity during retrieval by reducing redundant results while maintaining relevance."
+  },
+  {
+    "instruction": "Why use MMR instead of top-k retrieval?",
+    "response": "Top-k retrieval may return highly similar chunks. MMR introduces diversity, helping the model see different relevant pieces of information."
+  },
+  {
+    "instruction": "What is hybrid search?",
+    "response": "Hybrid search combines semantic vector retrieval with keyword-based retrieval such as BM25 to improve recall and precision."
+  },
+  {
+    "instruction": "What is BM25?",
+    "response": "BM25 is a ranking algorithm used in information retrieval that scores documents based on keyword frequency and importance."
+  },
+  {
+    "instruction": "What is reranking?",
+    "response": "Reranking uses a stronger model to reorder retrieved documents and improve the quality of the final context provided to the language model."
+  },
+  {
+    "instruction": "Why use a cross encoder for reranking?",
+    "response": "Cross encoders jointly process the query and document, allowing them to produce more accurate relevance scores than embedding similarity alone."
+  },
+  {
+    "instruction": "What is contextual compression?",
+    "response": "Contextual compression removes irrelevant information from retrieved documents so that only useful context is passed to the language model."
+  },
+  {
+    "instruction": "What is query expansion?",
+    "response": "Query expansion generates alternative versions of a query to improve retrieval coverage and recall."
+  },
+  {
+    "instruction": "What is multi-query retrieval?",
+    "response": "Multi-query retrieval generates multiple search queries from a single question and merges the results to improve retrieval quality."
+  },
+  {
+    "instruction": "What is a retriever?",
+    "response": "A retriever is a component that searches a knowledge base and returns relevant documents for a query."
+  },
+  {
+    "instruction": "What is semantic search?",
+    "response": "Semantic search retrieves information based on meaning rather than exact keyword matches."
+  },
+  {
+    "instruction": "What is top-k retrieval?",
+    "response": "Top-k retrieval returns the k most relevant documents according to a similarity score."
+  },
+  {
+    "instruction": "Why are citations useful in RAG?",
+    "response": "Citations improve trustworthiness by showing which sources support the generated answer."
+  },
+  {
+    "instruction": "What is LangGraph?",
+    "response": "LangGraph is a framework for building stateful AI agents using graphs composed of nodes and edges."
+  },
+  {
+    "instruction": "What is a node in LangGraph?",
+    "response": "A node is a unit of computation that reads state, performs work, and updates the graph state."
+  },
+  {
+    "instruction": "What is an edge in LangGraph?",
+    "response": "An edge defines the transition between nodes during graph execution."
+  },
+  {
+    "instruction": "What is graph state?",
+    "response": "Graph state is a shared structured object that stores information exchanged between nodes."
+  },
+  {
+    "instruction": "What is a router node?",
+    "response": "A router node determines which path execution should follow based on the current state."
+  },
+  {
+    "instruction": "Why use LangGraph instead of a simple chain?",
+    "response": "LangGraph supports branching, loops, memory, reflection, and complex workflows that are difficult to implement using linear chains."
+  },
+  {
+    "instruction": "What is reflection in AI agents?",
+    "response": "Reflection allows an agent to evaluate its own reasoning or output and improve future actions."
+  },
+  {
+    "instruction": "What is memory in LangGraph?",
+    "response": "Memory stores information from previous interactions so the agent can recall relevant context later."
+  },
+  {
+    "instruction": "What is long term memory?",
+    "response": "Long term memory persists information across sessions and can be retrieved when needed."
+  },
+  {
+    "instruction": "What is short term memory?",
+    "response": "Short term memory stores information relevant to the current conversation or execution."
+  },
+  {
+    "instruction": "What is a planning agent?",
+    "response": "A planning agent creates a sequence of actions before execution instead of reacting one step at a time."
+  },
+  {
+    "instruction": "What is ReAct?",
+    "response": "ReAct combines reasoning and acting by allowing language models to think, use tools, observe results, and continue reasoning."
+  },
+  {
+    "instruction": "What is tool calling?",
+    "response": "Tool calling allows a language model to invoke external functions, APIs, or systems to obtain information or perform actions."
+  },
+  {
+    "instruction": "Why is observability important?",
+    "response": "Observability helps developers inspect execution traces, debug workflows, and evaluate agent behavior."
+  },
+  {
+    "instruction": "What is LangSmith?",
+    "response": "LangSmith is a platform for tracing, evaluating, and debugging AI applications and agents."
+  },
+  {
+    "instruction": "What is a transformer?",
+    "response": "A transformer is a neural network architecture that uses self attention to process sequences efficiently."
+  },
+  {
+    "instruction": "What is self attention?",
+    "response": "Self attention allows tokens to attend to other tokens in the sequence and determine which information is most relevant."
+  },
+  {
+    "instruction": "What are query vectors?",
+    "response": "Query vectors represent what information a token is searching for during attention."
+  },
+  {
+    "instruction": "What are key vectors?",
+    "response": "Key vectors represent information available for matching during attention."
+  },
+  {
+    "instruction": "What are value vectors?",
+    "response": "Value vectors contain the information that is retrieved after attention scores are computed."
+  },
+  {
+    "instruction": "What is q_proj?",
+    "response": "q_proj is the linear projection layer that generates query vectors used in attention."
+  },
+  {
+    "instruction": "What is k_proj?",
+    "response": "k_proj is the linear projection layer that generates key vectors used in attention."
+  },
+  {
+    "instruction": "What is v_proj?",
+    "response": "v_proj is the linear projection layer that generates value vectors used in attention."
+  },
+  {
+    "instruction": "What is an attention head?",
+    "response": "An attention head learns a different pattern of relationships between tokens and processes information independently."
+  },
+  {
+    "instruction": "Why are multiple attention heads useful?",
+    "response": "Multiple heads allow the model to capture different types of relationships simultaneously."
+  },
+  {
+    "instruction": "What is positional encoding?",
+    "response": "Positional encoding provides information about token order since attention alone is permutation invariant."
+  },
+  {
+    "instruction": "What is KV cache?",
+    "response": "KV cache stores previously computed key and value tensors during inference so they do not need to be recomputed."
+  },
+  {
+    "instruction": "Why is KV cache important?",
+    "response": "KV cache significantly reduces inference latency during autoregressive generation."
+  },
+  {
+    "instruction": "What is LoRA?",
+    "response": "LoRA, or Low Rank Adaptation, fine tunes models by learning small low rank matrices instead of updating all model parameters."
+  },
+  {
+    "instruction": "Why is LoRA efficient?",
+    "response": "LoRA trains only a small number of parameters while keeping the original model frozen, reducing memory and compute requirements."
+  },
+  {
+    "instruction": "What is the rank parameter in LoRA?",
+    "response": "The rank controls the size of the trainable low rank matrices and determines the capacity of the adaptation."
+  },
+  {
+    "instruction": "Why freeze base model weights in LoRA?",
+    "response": "Freezing base weights reduces memory usage and preserves the pretrained knowledge while adapters learn task specific behavior."
+  },
+  {
+    "instruction": "What is QLoRA?",
+    "response": "QLoRA combines quantization and LoRA to fine tune large models using significantly less memory."
+  },
+  {
+    "instruction": "What is quantization?",
+    "response": "Quantization reduces memory usage by storing model weights in lower precision formats such as 8-bit or 4-bit representations."
+  },
+  {
+    "instruction": "What is supervised fine tuning?",
+    "response": "Supervised fine tuning trains a language model on instruction response pairs to improve task performance."
+  },
+  {
+    "instruction": "What is instruction tuning?",
+    "response": "Instruction tuning teaches a model to follow natural language instructions by training on prompt response examples."
+  },
+  {
+    "instruction": "What is a tokenizer?",
+    "response": "A tokenizer converts text into tokens that can be processed by a language model."
+  },
+  {
+    "instruction": "What is a context window?",
+    "response": "A context window is the maximum number of tokens a model can consider at one time."
+  },
+  {
+    "instruction": "Why do large language models hallucinate?",
+    "response": "Hallucinations occur when a model generates plausible sounding information that is unsupported or incorrect."
+  },
+  {
+    "instruction": "How does retrieval reduce hallucinations?",
+    "response": "Retrieval grounds responses in external documents, providing evidence that improves factual accuracy."
+  }
+]
