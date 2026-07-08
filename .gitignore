@@ -1,1 +1,6 @@
 .history/
+.venv/
+outputs/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
