@@ -10,7 +10,7 @@ MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(
     MODEL_NAME
 )
-
+device = "cuda" if torch.cuda.is_available() else "cpu"
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME
 )
@@ -20,22 +20,22 @@ model.eval()
 
 def ask(question: str):
 
-    prompt = f"""### Instruction:
+    prompt = f"""->Instruction:
 {question}
 
-### Response:
+-> Response:
 """
 
     inputs = tokenizer(
         prompt,
         return_tensors="pt",
-    )
+    ).to(device)
 
     with torch.no_grad():
 
         outputs = model.generate(
             **inputs,
-            max_new_tokens=128,
+            max_new_tokens=32,
             do_sample=True,
             temperature=0.7,
             top_p=0.9,
@@ -61,4 +61,6 @@ questions = [
 ]
 
 for q in questions:
+    print(f"\nGenerating answer for: {q}")
     ask(q)
+    print("Generation complete")

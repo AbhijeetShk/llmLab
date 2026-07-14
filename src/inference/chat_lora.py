@@ -20,6 +20,7 @@ base_model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME
 )
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = PeftModel.from_pretrained(
     base_model,
@@ -39,13 +40,13 @@ def ask(question: str):
     inputs = tokenizer(
         prompt,
         return_tensors="pt",
-    )
+    ).to(device)
 
     with torch.no_grad():
 
         outputs = model.generate(
             **inputs,
-            max_new_tokens=128,
+            max_new_tokens=32,
             do_sample=True,
             temperature=0.7,
             top_p=0.9,
@@ -71,4 +72,6 @@ questions = [
 ]
 
 for q in questions:
+    print(f"\nGenerating answer for: {q}")
     ask(q)
+    print("Generation complete")
