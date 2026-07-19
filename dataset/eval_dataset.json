@@ -1,0 +1,92 @@
+[
+  {
+    "question": "How does Retrieval Augmented Generation help reduce hallucinations in language models?"
+  },
+  {
+    "question": "Compare semantic search and keyword search."
+  },
+  {
+    "question": "When would you choose hybrid search over pure vector search?"
+  },
+  {
+    "question": "Explain the role of embeddings in a RAG pipeline."
+  },
+  {
+    "question": "What factors influence chunk size selection for document retrieval?"
+  },
+  {
+    "question": "How does Maximum Marginal Relevance improve retrieval quality?"
+  },
+  {
+    "question": "Describe the purpose of reranking in retrieval systems."
+  },
+  {
+    "question": "What are the advantages of using pgvector with PostgreSQL?"
+  },
+  {
+    "question": "How does cosine similarity measure semantic relevance?"
+  },
+  {
+    "question": "Explain the difference between dense and sparse retrieval methods."
+  },
+  {
+    "question": "Why is query expansion useful in information retrieval?"
+  },
+  {
+    "question": "How does contextual compression reduce prompt size?"
+  },
+  {
+    "question": "What problem does parent-child retrieval solve?"
+  },
+  {
+    "question": "Describe how reciprocal rank fusion combines retrieval results."
+  },
+  {
+    "question": "What are common causes of hallucinations in RAG systems?"
+  },
+  {
+    "question": "How can citation verification improve answer reliability?"
+  },
+  {
+    "question": "Explain the purpose of a planner in an agent architecture."
+  },
+  {
+    "question": "How does ReAct combine reasoning and tool usage?"
+  },
+  {
+    "question": "What benefits does LangGraph provide for agent workflows?"
+  },
+  {
+    "question": "Describe the role of long-term memory in AI agents."
+  },
+  {
+    "question": "How can reflection loops improve agent responses?"
+  },
+  {
+    "question": "What criteria can be used to evaluate generated answers?"
+  },
+  {
+    "question": "Why is grounding important for trustworthy AI systems?"
+  },
+  {
+    "question": "Compare LoRA and full fine-tuning."
+  },
+  {
+    "question": "How does QLoRA reduce memory requirements during training?"
+  },
+  {
+    "question": "What is the purpose of low-rank adaptation in transformer models?"
+  },
+  {
+    "question": "Explain how quantization affects model efficiency."
+  },
+  {
+    "question": "What are the trade-offs between model size and inference speed?"
+  },
+  {
+    "question": "How can vector databases scale retrieval for large document collections?"
+  },
+  {
+    "question": "Describe an end-to-end workflow for answering questions using a RAG system."
+  }
+]
