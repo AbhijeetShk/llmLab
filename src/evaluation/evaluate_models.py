@@ -106,7 +106,7 @@ def generate(
 
     
     if generated.startswith(prompt):
-        generated = generated[len(prompt):].strip() # Remove prompt from output if present
+        generated = generated[len(prompt):].strip()
 
     return generated
 
