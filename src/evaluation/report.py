@@ -1,8 +1,9 @@
 import json
 
-
+REPORT_PATH = "outputs/evaluation_report.md"
+RESULTS_PATH = "outputs/evaluation_results.json"
 with open(
-    "outputs/evaluation_results.json",
+    RESULTS_PATH,
     "r",
     encoding="utf-8",
 ) as f:
@@ -17,29 +18,39 @@ lines.append("-> QLoRA Evaluation Report\n")
 
 for i, sample in enumerate(results):
 
-    lines.append(f"-> Sample {i+1}\n")
+    lines.append(f"-> Sample {i + 1}\n")
 
-    lines.append(
-        f"-> Question\n{sample['question']}\n"
-    )
+    lines.append("-> Instruction")
+    lines.append(sample["instruction"])
+    lines.append("")
 
-    lines.append(
-        f"-> Reference\n{sample['reference']}\n"
-    )
+    lines.append("-> Reference")
+    lines.append(sample["reference"])
+    lines.append("")
 
-    lines.append(
-        f"-> Base\n{sample['base']}\n"
-    )
+    for model_name in ["base", "qlora"]:
 
-    lines.append(
-        f"-> QLoRA\n{sample['qlora']}\n"
-    )
+        result = sample[model_name]
+
+        lines.append(f"-> {model_name.upper()}")
+
+        lines.append(f"- Latency: {result['latency']} s")
+        lines.append(f"- Input Tokens: {result['input_tokens']}")
+        lines.append(f"- Output Tokens: {result['output_tokens']}")
+        lines.append(f"- Total Tokens: {result['total_tokens']}")
+        lines.append(f"- Characters: {result['characters']}")
+        lines.append(f"- Words: {result['words']}")
+        lines.append("")
+
+        lines.append("-> Response")
+        lines.append(result["response"])
+        lines.append("")
 
     lines.append("---\n")
 
 
 with open(
-    "outputs/evaluation_report.md",
+    REPORT_PATH,
     "w",
     encoding="utf-8",
 ) as f:

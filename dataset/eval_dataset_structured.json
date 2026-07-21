@@ -1,0 +1,122 @@
+[
+  {
+    "instruction": "How does Retrieval Augmented Generation help reduce hallucinations in language models?",
+    "response": "Retrieval Augmented Generation (RAG) reduces hallucinations by grounding a language model's responses in external knowledge rather than relying solely on its internal parameters. When a user submits a query, a retriever searches a knowledge base for relevant documents using semantic or hybrid search. The retrieved context is then supplied to the language model, allowing it to generate answers supported by factual evidence. Because the model conditions its response on retrieved documents instead of memorized knowledge, it is less likely to fabricate information and can answer questions about recent or domain-specific content."
+  },
+  {
+    "instruction": "Compare semantic search and keyword search.",
+    "response": "Keyword search retrieves documents based on exact or approximate lexical matches between the query and document terms, making it highly effective when terminology is known and consistent. Semantic search represents both queries and documents as dense embeddings and retrieves results based on meaning rather than exact wording. Semantic search handles synonyms, paraphrases, and natural language queries more effectively, while keyword search often performs better for exact identifiers, code snippets, or specific phrases. Modern retrieval systems frequently combine both approaches through hybrid search."
+  },
+  {
+    "instruction": "When would you choose hybrid search over pure vector search?",
+    "response": "Hybrid search should be used when both semantic understanding and exact keyword matching are important. It combines dense vector retrieval with sparse retrieval methods such as BM25, improving recall for technical terms, product names, error codes, and abbreviations while still capturing semantic similarity. Hybrid search is particularly useful in enterprise search, documentation systems, and RAG applications where relying exclusively on either dense or sparse retrieval may miss relevant information."
+  },
+  {
+    "instruction": "Explain the role of embeddings in a RAG pipeline.",
+    "response": "Embeddings convert text into dense numerical vectors that capture semantic meaning. During document ingestion, each chunk is embedded and stored inside a vector database. At query time, the user's question is converted into an embedding using the same model. Similarity search compares the query embedding with stored document embeddings to retrieve the most relevant context. Embeddings enable semantic retrieval, allowing the system to match concepts rather than exact words."
+  },
+  {
+    "instruction": "What factors influence chunk size selection for document retrieval?",
+    "response": "Chunk size should balance retrieval precision and contextual completeness. Smaller chunks increase retrieval precision but may omit important surrounding information, while larger chunks preserve context but may introduce irrelevant content into the prompt. Factors affecting chunk size include document structure, embedding model capabilities, context window limitations, retrieval strategy, overlap size, and the nature of the downstream task. Effective chunking often requires experimentation to optimize retrieval quality."
+  },
+  {
+    "instruction": "How does Maximum Marginal Relevance improve retrieval quality?",
+    "response": "Maximum Marginal Relevance (MMR) improves retrieval quality by balancing relevance and diversity. Instead of selecting only the highest-scoring documents, MMR penalizes documents that are highly similar to previously selected results. This reduces redundancy and increases the likelihood that retrieved documents cover different aspects of the user's question, resulting in richer context for the language model."
+  },
+  {
+    "instruction": "Describe the purpose of reranking in retrieval systems.",
+    "response": "Reranking improves retrieval quality by applying a more accurate but computationally expensive model after the initial retrieval stage. A retriever first returns a candidate set of documents using embeddings or BM25, and a reranker—often a cross-encoder—evaluates each query-document pair jointly to estimate relevance. The reordered documents generally provide more accurate context, improving downstream answer quality."
+  },
+  {
+    "instruction": "What are the advantages of using pgvector with PostgreSQL?",
+    "response": "pgvector extends PostgreSQL with vector similarity search while preserving the benefits of a relational database. It allows structured metadata filtering, ACID transactions, SQL querying, joins, indexing, and vector search within a single database. This simplifies deployment, reduces infrastructure complexity, and enables hybrid applications that combine relational and semantic retrieval without requiring a separate vector database."
+  },
+  {
+    "instruction": "How does cosine similarity measure semantic relevance?",
+    "response": "Cosine similarity measures the angle between two embedding vectors rather than their magnitude. When two vectors point in similar directions, their cosine similarity approaches one, indicating high semantic similarity. Because embeddings encode meaning, cosine similarity enables retrieval systems to identify conceptually related documents even when they use different vocabulary."
+  },
+  {
+    "instruction": "Explain the difference between dense and sparse retrieval methods.",
+    "response": "Sparse retrieval methods represent documents using explicit term frequencies and keyword statistics, such as BM25, making them highly effective for exact matches. Dense retrieval represents text using learned embedding vectors that capture semantic meaning, enabling retrieval based on conceptual similarity. Sparse retrieval excels at lexical precision, while dense retrieval performs better on paraphrased or semantically similar queries. Hybrid retrieval combines the strengths of both."
+  },
+  {
+    "instruction": "Why is query expansion useful in information retrieval?",
+    "response": "Query expansion improves retrieval recall by generating alternative versions of the user's query using synonyms, related concepts, abbreviations, or reformulated questions. These expanded queries retrieve documents that might not match the original wording but are still relevant, reducing the chance of missing useful information."
+  },
+  {
+    "instruction": "How does contextual compression reduce prompt size?",
+    "response": "Contextual compression removes irrelevant sentences and retains only information directly related to the user's question. By filtering retrieved documents before they are sent to the language model, contextual compression reduces token usage, lowers inference cost, and increases the proportion of relevant context inside the model's context window."
+  },
+  {
+    "instruction": "What problem does parent-child retrieval solve?",
+    "response": "Parent-child retrieval addresses the trade-off between retrieval precision and contextual completeness. Small child chunks are embedded and indexed for accurate retrieval, while larger parent documents are returned to the language model after retrieval. This preserves surrounding context without sacrificing retrieval accuracy."
+  },
+  {
+    "instruction": "Describe how reciprocal rank fusion combines retrieval results.",
+    "response": "Reciprocal Rank Fusion (RRF) combines rankings from multiple retrieval methods by assigning each document a score based on its position within each ranked list. Documents that consistently appear near the top across multiple retrieval methods receive higher final scores. RRF improves robustness and often outperforms relying on a single retrieval strategy."
+  },
+  {
+    "instruction": "What are common causes of hallucinations in RAG systems?",
+    "response": "Hallucinations in RAG systems commonly arise from poor retrieval quality, irrelevant context, incomplete documents, missing citations, outdated knowledge bases, ambiguous user queries, and overly aggressive generation beyond retrieved evidence. Improving retrieval accuracy, grounding, reranking, and citation verification significantly reduces hallucinations."
+  },
+  {
+    "instruction": "How can citation verification improve answer reliability?",
+    "response": "Citation verification ensures that every factual statement generated by the language model is supported by retrieved evidence. By checking whether claims correspond to retrieved documents, the system can detect unsupported statements, reject hallucinated content, and provide users with transparent evidence for generated answers."
+  },
+  {
+    "instruction": "Explain the purpose of a planner in an agent architecture.",
+    "response": "A planner decomposes complex user requests into a sequence of smaller tasks before execution. Instead of immediately generating a response, the planner determines which tools should be used, what information should be retrieved, and in what order actions should occur. Planning improves reasoning quality, reduces unnecessary tool usage, and enables more reliable multi-step problem solving."
+  },
+  {
+    "instruction": "How does ReAct combine reasoning and tool usage?",
+    "response": "ReAct combines reasoning and acting through an iterative loop where the language model first reasons about the problem, selects an appropriate action such as calling a tool, observes the result, and continues reasoning based on the new information. This process allows the agent to solve problems requiring external knowledge, calculations, or multiple reasoning steps."
+  },
+  {
+    "instruction": "What benefits does LangGraph provide for agent workflows?",
+    "response": "LangGraph enables developers to build stateful agent workflows using graph-based execution rather than linear chains. It supports branching, loops, conditional routing, memory integration, planning, reflection, retries, and complex multi-agent interactions. These capabilities make it well suited for production AI systems with sophisticated reasoning pipelines."
+  },
+  {
+    "instruction": "Describe the role of long-term memory in AI agents.",
+    "response": "Long-term memory allows AI agents to retain information across multiple conversations or sessions. Important user preferences, previous interactions, and persistent knowledge can be stored in external memory systems and retrieved when needed. This enables personalized, context-aware, and more consistent interactions over time."
+  },
+  {
+    "instruction": "How can reflection loops improve agent responses?",
+    "response": "Reflection loops allow an agent to evaluate its own reasoning or generated response before presenting it to the user. The agent can identify logical errors, missing evidence, unsupported claims, or incomplete reasoning and revise its answer accordingly. Reflection improves robustness, factual accuracy, and overall response quality."
+  },
+  {
+    "instruction": "What criteria can be used to evaluate generated answers?",
+    "response": "Generated answers can be evaluated using criteria such as factual accuracy, relevance to the user's question, completeness, coherence, grounding in retrieved evidence, citation quality, reasoning correctness, fluency, helpfulness, and consistency. Production systems often combine automatic metrics with human evaluation to assess overall quality."
+  },
+  {
+    "instruction": "Why is grounding important for trustworthy AI systems?",
+    "response": "Grounding ensures that generated responses are based on verifiable evidence rather than unsupported model predictions. By connecting answers to retrieved documents or trusted data sources, grounding improves factual accuracy, transparency, explainability, and user trust while reducing hallucinations."
+  },
+  {
+    "instruction": "Compare LoRA and full fine-tuning.",
+    "response": "Full fine-tuning updates every parameter in a pretrained model, providing maximum flexibility but requiring significant memory, storage, and computational resources. LoRA freezes the original model weights and trains only small low-rank adapter matrices inserted into selected layers. LoRA dramatically reduces trainable parameters, speeds up training, lowers memory consumption, and allows multiple task-specific adapters to share the same base model."
+  },
+  {
+    "instruction": "How does QLoRA reduce memory requirements during training?",
+    "response": "QLoRA combines 4-bit quantization with Low-Rank Adaptation. The pretrained model weights are stored in a compressed 4-bit representation while only the LoRA adapter parameters remain trainable in higher precision. This significantly reduces GPU memory usage, enabling large language models to be fine-tuned on consumer-grade hardware without sacrificing much performance."
+  },
+  {
+    "instruction": "What is the purpose of low-rank adaptation in transformer models?",
+    "response": "Low-rank adaptation approximates weight updates using two small trainable matrices whose product represents the full update. Instead of modifying every parameter, LoRA learns compact low-rank updates that capture task-specific behavior while preserving the original pretrained weights. This approach greatly reduces training cost and storage requirements."
+  },
+  {
+    "instruction": "Explain how quantization affects model efficiency.",
+    "response": "Quantization reduces the numerical precision used to store model weights and activations, decreasing memory usage and improving computational efficiency. Lower-precision representations such as INT8 or 4-bit weights reduce storage requirements and can increase inference throughput. Although aggressive quantization may slightly reduce model accuracy, modern techniques such as NF4 minimize this trade-off."
+  },
+  {
+    "instruction": "What are the trade-offs between model size and inference speed?",
+    "response": "Larger models generally provide stronger reasoning capabilities, broader knowledge, and higher accuracy, but they require more memory, computational resources, and inference time. Smaller models offer faster responses, lower deployment costs, and reduced hardware requirements but may struggle with complex reasoning tasks. Selecting an appropriate model depends on the application's latency, cost, and quality requirements."
+  },
+  {
+    "instruction": "How can vector databases scale retrieval for large document collections?",
+    "response": "Vector databases scale semantic retrieval by storing embeddings alongside specialized approximate nearest neighbor indexes such as HNSW or IVF. These indexing techniques avoid exhaustive comparisons by efficiently searching only promising regions of the embedding space. Combined with metadata filtering, distributed storage, and parallel query execution, vector databases support low-latency retrieval across millions or even billions of document embeddings."
+  },
+  {
+    "instruction": "Describe an end-to-end workflow for answering questions using a RAG system.",
+    "response": "An end-to-end RAG workflow begins by ingesting documents, splitting them into chunks, generating embeddings, and storing them in a vector database. When a user submits a query, the system embeds the question, retrieves relevant documents using semantic or hybrid search, optionally reranks and compresses the results, and supplies the retrieved context to a language model. The model generates a grounded answer, optionally verifies citations or detects hallucinations, and returns a response supported by evidence."
+  }
+]

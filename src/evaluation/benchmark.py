@@ -11,7 +11,7 @@ from models import (
 
 ADAPTER = "outputs/qlora_adapter"
 
-OUTPUT = "outputs/evaluation_results.json"
+RESULTS_PATH = "outputs/evaluation_results.json"
 
 
 print("Loading models...")
@@ -44,14 +44,11 @@ results = []
 
 
 for sample in tqdm(dataset):
-
-    question = sample["instruction"]
+    instruction = sample["instruction"]
     reference = sample["response"]
 
     row = {
-
-        "question": question,
-
+        "instruction": instruction,
         "reference": reference,
     }
 
@@ -63,14 +60,14 @@ for sample in tqdm(dataset):
         row[name] = generate(
             model,
             tokenizer,
-            question,
+            instruction,
         )
 
     results.append(row)
 
 
 with open(
-    OUTPUT,
+    RESULTS_PATH,
     "w",
     encoding="utf-8",
 ) as f:
