@@ -3,12 +3,20 @@
     "average_latency": 28.318,
     "average_output_tokens": 64,
     "average_words": 54.2,
-    "average_characters": 361.17
+    "average_characters": 361.17,
+    "average_bleu": 0.0141,
+    "average_rouge1": 0.2622,
+    "average_rouge2": 0.0554,
+    "average_rougeL": 0.1627
   },
   "qlora": {
     "average_latency": 42.71,
     "average_output_tokens": 33.67,
     "average_words": 27.5,
-    "average_characters": 180.33
+    "average_characters": 180.33,
+    "average_bleu": 0.0132,
+    "average_rouge1": 0.2407,
+    "average_rouge2": 0.0605,
+    "average_rougeL": 0.1725
   }
 }
