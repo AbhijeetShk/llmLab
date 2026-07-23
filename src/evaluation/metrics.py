@@ -2,7 +2,11 @@ import json
 from statistics import mean
 
 from quality import compute_bleu, compute_rouge
-
+from quality import (
+    compute_bleu,
+    compute_rouge,
+    compute_bertscore,
+)
 
 RESULTS_PATH = "outputs/evaluation_results.json"
 SUMMARY_PATH = "outputs/evaluation_summary.json"
@@ -34,6 +38,11 @@ metrics = {
         "rouge2": [],
 
         "rougeL": [],
+        "bertscore_precision": [],
+
+        "bertscore_recall": [],
+
+        "bertscore_f1": [],
     },
 
     "qlora": {
@@ -49,6 +58,11 @@ metrics = {
         "rouge2": [],
 
         "rougeL": [],
+        "bertscore_precision": [],
+
+        "bertscore_recall": [],
+
+        "bertscore_f1": [],
     },
 }
 
@@ -67,7 +81,10 @@ for sample in results:
             reference,
             prediction,
         )       
-
+        bert = compute_bertscore(
+            reference,
+            prediction,
+        )
         metrics[model]["latency"].append(
             result["latency"]
         )
@@ -97,6 +114,17 @@ for sample in results:
 
         metrics[model]["rougeL"].append(
             rouge_scores["rougeL"]
+        )
+        metrics[model]["bertscore_precision"].append(
+            bert["precision"]
+        )
+
+        metrics[model]["bertscore_recall"].append(
+            bert["recall"]
+        )
+
+        metrics[model]["bertscore_f1"].append(
+            bert["f1"]
         )
  
 summary = {}
@@ -142,6 +170,21 @@ for model in metrics:
             4,
         ),
     }
+    summary[model]["average_bertscore_precision"] = round(
+        mean(metrics[model]["bertscore_precision"]),
+        4,
+        )
+
+    summary[model]["average_bertscore_recall"] = round(
+        mean(metrics[model]["bertscore_recall"]),
+        4,
+        )
+
+    summary[model]["average_bertscore_f1"] = round(
+        mean(metrics[model]["bertscore_f1"]),
+        4,
+        )
+
 
 with open(
     SUMMARY_PATH,
