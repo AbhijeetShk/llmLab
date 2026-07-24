@@ -7,7 +7,10 @@
     "average_bleu": 0.0141,
     "average_rouge1": 0.2622,
     "average_rouge2": 0.0554,
-    "average_rougeL": 0.1627
+    "average_rougeL": 0.1627,
+    "average_bertscore_precision": 0.8672,
+    "average_bertscore_recall": 0.8644,
+    "average_bertscore_f1": 0.8658
   },
   "qlora": {
     "average_latency": 42.71,
@@ -17,6 +20,9 @@
     "average_bleu": 0.0132,
     "average_rouge1": 0.2407,
     "average_rouge2": 0.0605,
-    "average_rougeL": 0.1725
+    "average_rougeL": 0.1725,
+    "average_bertscore_precision": 0.9002,
+    "average_bertscore_recall": 0.8648,
+    "average_bertscore_f1": 0.882
   }
 }
