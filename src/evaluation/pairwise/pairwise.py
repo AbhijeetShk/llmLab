@@ -2,7 +2,7 @@ import json
 
 from tqdm import tqdm
 
-from judges.pairwise_judge import compare
+from pairwise_judge import compare
 
 
 INPUT = "outputs/evaluation_results.json"
