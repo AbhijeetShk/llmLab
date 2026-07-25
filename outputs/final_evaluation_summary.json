@@ -1,0 +1,54 @@
+{
+  "automatic_metrics": {
+    "base": {
+      "average_latency": 28.318,
+      "average_output_tokens": 64,
+      "average_words": 54.2,
+      "average_characters": 361.17,
+      "average_bleu": 0.0141,
+      "average_rouge1": 0.2622,
+      "average_rouge2": 0.0554,
+      "average_rougeL": 0.1627,
+      "average_bertscore_precision": 0.8672,
+      "average_bertscore_recall": 0.8644,
+      "average_bertscore_f1": 0.8658
+    },
+    "qlora": {
+      "average_latency": 42.71,
+      "average_output_tokens": 33.67,
+      "average_words": 27.5,
+      "average_characters": 180.33,
+      "average_bleu": 0.0132,
+      "average_rouge1": 0.2407,
+      "average_rouge2": 0.0605,
+      "average_rougeL": 0.1725,
+      "average_bertscore_precision": 0.9002,
+      "average_bertscore_recall": 0.8648,
+      "average_bertscore_f1": 0.882
+    }
+  },
+  "llm_judge": {
+    "base": {
+      "correctness": 6.333333333333333,
+      "completeness": 4.233333333333333,
+      "faithfulness": 7.8,
+      "helpfulness": 6.133333333333334,
+      "overall": 5.833333333333333
+    },
+    "qlora": {
+      "correctness": 5.533333333333333,
+      "completeness": 3.566666666666667,
+      "faithfulness": 7.766666666666667,
+      "helpfulness": 5.033333333333333,
+      "overall": 4.866666666666666
+    }
+  },
+  "pairwise": {
+    "base": 15,
+    "qlora": 6,
+    "tie": 9,
+    "base_win_rate": 0.5,
+    "qlora_win_rate": 0.2,
+    "tie_rate": 0.3
+  }
+}

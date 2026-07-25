@@ -6,7 +6,9 @@ PIPELINE = [
     ("Benchmark", "src/evaluation/benchmark.py"),
     ("Report", "src/evaluation/report.py"),
     ("Metrics", "src/evaluation/metrics.py"),
-    ("LLM Judge", "src/evaluation/judge.py")
+    ("LLM Judge", "src/evaluation/judge.py"),
+    ("Pairwise", "src/evaluation/pairwise/pairwise.py"),
+    ("Final Summary", "src/evaluation/summary/final_summary.py"),
 ]
 
 
