@@ -8,7 +8,9 @@ PIPELINE = [
     ("Metrics", "src/evaluation/metrics.py"),
     ("LLM Judge", "src/evaluation/judge.py"),
     ("Pairwise", "src/evaluation/pairwise/pairwise.py"),
-    ("Final Summary", "src/evaluation/summary/final_summary.py"),
+    ("Failure Analysis", "src/evaluation/analysis/failure_analysis.py"),
+    ("Failure Summary", "src/evaluation/analysis/failure_summary.py"),
+    ("Final Summary", "src/evaluation/aggregation/final_summary.py"),
 ]
 
 
