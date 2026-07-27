@@ -1,28 +1,57 @@
-class KVCache:
- 
-    #stores KV cache for each active request.
+from typing import Any
 
+
+class KVCache:
+
+    """
+    Stores transformer KV caches for every active request.
+    """
 
     def __init__(self):
 
-        self.cache = {}
+        self._cache: dict[int, Any] = {}
 
-    def get(self, request_id):
 
-        return self.cache.get(request_id)
 
-    def update(self, request_id, kv):
+    def set(
+        self,
+        request_id: int,
+        past_key_values,
+    ):
 
-        self.cache[request_id] = kv
+        self._cache[request_id] = past_key_values
 
-    def remove(self, request_id):
+    def get(
+        self,
+        request_id: int,
+    ):
 
-        self.cache.pop(request_id, None)
+        return self._cache.get(request_id)
+
+    def remove(
+        self,
+        request_id: int,
+    ):
+
+        self._cache.pop(request_id, None)
 
     def clear(self):
 
-        self.cache.clear()
+        self._cache.clear()
 
-    def __len__(self):
 
-        return len(self.cache)
+
+    def contains(
+        self,
+        request_id: int,
+    ) -> bool:
+
+        return request_id in self._cache
+
+    def num_requests(self):
+
+        return len(self._cache)
+
+    def active_request_ids(self):
+
+        return list(self._cache.keys())
