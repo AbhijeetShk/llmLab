@@ -1,8 +1,8 @@
 import torch
 
 from transformers import (
-    AutoModelForCausalLM,
     AutoTokenizer,
+    AutoModelForCausalLM,
 )
 
 
@@ -16,7 +16,7 @@ class ModelWorker:
 
         self.device = (
             device
-            if device is not None
+            if device
             else (
                 "cuda"
                 if torch.cuda.is_available()
@@ -34,33 +34,77 @@ class ModelWorker:
 
         self.model.eval()
 
-    @torch.no_grad()
-    def generate(
+
+
+    def encode(
         self,
         prompt: str,
-        *,
-        max_new_tokens: int = 128,
-        temperature: float = 1.0,
-        top_k: int = 50,
-        top_p: float = 0.95,
-    ) -> str:
+    ):
 
-        inputs = self.tokenizer(
+        return self.tokenizer(
             prompt,
             return_tensors="pt",
-        ).to(self.device)
+        ).input_ids.to(self.device)
 
-        output = self.model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-            top_k=top_k,
-            top_p=top_p,
+
+    # First Forward Pass (Prefill)
+  
+
+    @torch.no_grad()
+    def prefill(
+        self,
+        input_ids: torch.Tensor,
+    ):
+
+        outputs = self.model(
+            input_ids=input_ids,
             use_cache=True,
         )
 
+        logits = outputs.logits[:, -1, :]
+
+        return (
+            logits,
+            outputs.past_key_values,
+        )
+
+
+    # Decoding one token
+
+
+    @torch.no_grad()
+    def decode(
+        self,
+        input_ids: torch.Tensor,
+        past_key_values,
+    ):
+
+        outputs = self.model(
+            input_ids=input_ids,
+            past_key_values=past_key_values,
+            use_cache=True,
+        )
+
+        logits = outputs.logits[:, -1, :]
+
+        return (
+            logits,
+            outputs.past_key_values,
+        )
+
+
+    # convert ids to text
+
+
+    def decode_tokens(
+        self,
+        token_ids,
+    ):
+
+        if isinstance(token_ids, torch.Tensor):
+            token_ids = token_ids.tolist()
+
         return self.tokenizer.decode(
-            output[0],
+            token_ids,
             skip_special_tokens=True,
         )
