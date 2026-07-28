@@ -1,6 +1,6 @@
 from collections import deque
 
-from .request import Request
+from .generation_state import GenerationState
 
 
 class Scheduler:
@@ -11,20 +11,22 @@ class Scheduler:
     def __init__(self):
         self.queue = deque()
 
-    def submit(self, request: Request):
-        self.queue.append(request)
+    def submit(self, state: GenerationState):
 
-    def next(self) -> Request | None:
-       #return next request to decode
+        self.queue.append(state)
+
+    def next(self):
+
+#return next request to decode
         if not self.queue:
             return None
 
         return self.queue.popleft()
 
-    def reschedule(self, request: Request):
+    def reschedule(self, state: GenerationState):
         #reschedule an unfinished req to the end
-        if not request.is_finished():
-            self.queue.append(request)
+        if not state.request.is_finished():
+            self.queue.append(state)
 
     def has_requests(self):
         return len(self.queue) > 0

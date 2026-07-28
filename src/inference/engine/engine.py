@@ -71,6 +71,12 @@ class InferenceEngine:
         state.request.append_token(
             state.last_token.item()
         )
+        #generation stops either:EOS token generated,or max_new_tokens reached
+
+
+        if state.last_token.item() == self.worker.tokenizer.eos_token_id:
+            state.request.mark_finished()
+        print(f"Generated token: {state.request.generated_length()}",end="\r",flush=True,)
 
 #full generation loop
 
@@ -81,11 +87,17 @@ class InferenceEngine:
 
         self.prefill(state)
 
+        self.scheduler.submit(state)
+
         try:
 
-            while not state.request.is_finished():
+            while self.scheduler.has_requests():
 
-                self.step(state)
+                current_state = self.scheduler.next()
+
+                self.step(current_state)
+
+                self.scheduler.reschedule(current_state)
 
             state.request.update_text(
                 self.worker.decode_tokens(
