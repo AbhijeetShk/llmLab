@@ -1,27 +1,22 @@
 from .engine import InferenceEngine
 from .request import Request
+from .generation_state import GenerationState
 
 MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
 engine = InferenceEngine(MODEL_NAME)
 
-engine.submit(
-    Request(
-        request_id=1,
-        prompt="Explain LoRA."
-    )
+request = Request(
+    request_id=1,
+    prompt="Explain LoRA."
 )
 
-engine.submit(
-    Request(
-        request_id=2,
-        prompt="Explain RAG."
-    )
-)
+state = GenerationState(request)
 
-print(engine.pending())
+result = engine.generate(state)
 
-batch = engine.scheduler.next_batch(2)
+print()
 
-for request in batch:
-    print(request)
+print("Generated text:")
+
+print(result.generated_text)

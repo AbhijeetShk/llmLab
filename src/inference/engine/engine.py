@@ -2,7 +2,7 @@ from .worker import ModelWorker
 from .sampler import Sampler
 from .kv_cache import KVCache
 from .scheduler import Scheduler
-from .request import Request
+from .generation_state import GenerationState
 
 
 class InferenceEngine:
@@ -19,10 +19,11 @@ class InferenceEngine:
 
 #initialize req
 
-    def prefill(self, request: Request):
+    def prefill(self, state: GenerationState):
 #performs the initial forward pass for a request, initializes the KV cache, and returns the first token.
+
         input_ids = self.worker.encode(
-            request.prompt
+            state.request.prompt
         )
 
         logits, past_key_values = self.worker.prefill(
@@ -30,79 +31,74 @@ class InferenceEngine:
         )
 
         self.cache.set(
-            request.request_id,
+            state.request.request_id,
             past_key_values,
         )
 
-        next_token = self.sampler.greedy(
+        state.last_token = self.sampler.greedy(
             logits
         )
 
-        request.append_token(
-            next_token.item()
+        state.request.append_token(
+            state.last_token.item()
         )
-
-        return next_token
 
 #one token decode only
 
     def step(
         self,
-        request: Request,
-        last_token,
+        state: GenerationState,
     ):
 
         cache = self.cache.get(
-            request.request_id
+            state.request.request_id
         )
 
         logits, cache = self.worker.decode(
-            last_token,
+            state.last_token,
             cache,
         )
 
         self.cache.set(
-            request.request_id,
+            state.request.request_id,
             cache,
         )
 
-        next_token = self.sampler.greedy(
+        state.last_token = self.sampler.greedy(
             logits
         )
 
-        request.append_token(
-            next_token.item()
+        state.request.append_token(
+            state.last_token.item()
         )
-
-        return next_token
 
 #full generation loop
 
-def generate(
-    self,
-    request: Request,
-):
+    def generate(
+        self,
+        state: GenerationState,
+    ):
 
-    next_token = self.prefill(request)
+        self.prefill(state)
 
-    try:
-        while not request.is_finished():
-            next_token = self.step(
-                request,
-                next_token,
+        try:
+
+            while not state.request.is_finished():
+
+                self.step(state)
+
+            state.request.update_text(
+                self.worker.decode_tokens(
+                    state.request.generated_tokens
+                )
             )
 
-        request.update_text(
-            self.worker.decode_tokens(
-                request.generated_tokens
+            state.request.mark_finished()
+
+            return state.request
+
+        finally:
+
+            self.cache.remove(
+                state.request.request_id
             )
-        )
-
-        request.mark_finished()
-
-        return request
-
-    finally:
-        self.cache.remove(
-            request.request_id
-        )
