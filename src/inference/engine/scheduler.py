@@ -1,28 +1,33 @@
 from collections import deque
 
+from .request import Request
+
 
 class Scheduler:
-
-   #Maintains waiting requests.
+  
+    #round-robin scheduler for active generation requests.
 
 
     def __init__(self):
-
         self.queue = deque()
 
-    def submit(self, request):
-
+    def submit(self, request: Request):
         self.queue.append(request)
 
-    def next_batch(self, batch_size):
+    def next(self) -> Request | None:
+       #return next request to decode
+        if not self.queue:
+            return None
 
-        batch = []
+        return self.queue.popleft()
 
-        while self.queue and len(batch) < batch_size:
-            batch.append(self.queue.popleft())
+    def reschedule(self, request: Request):
+        #reschedule an unfinished req to the end
+        if not request.is_finished():
+            self.queue.append(request)
 
-        return batch
+    def has_requests(self):
+        return len(self.queue) > 0
 
-    def empty(self):
-
-        return len(self.queue) == 0
+    def size(self):
+        return len(self.queue)
