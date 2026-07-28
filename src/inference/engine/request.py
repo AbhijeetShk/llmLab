@@ -15,6 +15,7 @@ class Request:
     finished: bool = False
 
     max_new_tokens: int = 128
+    
 
 
 
