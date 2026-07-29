@@ -71,18 +71,24 @@ class InferenceEngine:
         state.request.append_token(
             state.last_token.item()
         )
-        #generation stops either:EOS token generated,or max_new_tokens reached
 
+        #generation stops either:EOS token generated,or max_new_tokens reached
 
         if state.last_token.item() == self.worker.tokenizer.eos_token_id:
             state.request.mark_finished()
-        print(f"Generated token: {state.request.generated_length()}",end="\r",flush=True,)
+
+        print(
+            f"Generated token: {state.request.generated_length()}",
+            end="\r",
+            flush=True,
+        )
 
 #full generation loop
+
     def step_batch(
         self,
-        states: list[GenerationState],):
-
+        states: list[GenerationState],
+    ):
 
         for state in states:
 
@@ -93,32 +99,54 @@ class InferenceEngine:
         state: GenerationState,
     ):
 
-        self.prefill(state)
+        return self.generate_batch([state])[0]
 
-        self.scheduler.submit(state)
+    def generate_batch(
+        self,
+        states: list[GenerationState],
+    ):
+
+        for state in states:
+
+            self.prefill(state)
+
+            self.scheduler.submit(state)
 
         try:
 
             while self.scheduler.has_requests():
-                batch = self.scheduler.next_batch(batch_size=4)
 
-                self.step(batch)
+                batch = self.scheduler.next_batch(
+                    batch_size=4,
+                )
+
+                self.step_batch(batch)
+
                 for state in batch:
 
-                    self.scheduler.reschedule(state)
+                    self.scheduler.reschedule(
+                        state
+                    )
 
-            state.request.update_text(
-                self.worker.decode_tokens(
-                    state.request.generated_tokens
+            for state in states:
+
+                state.request.update_text(
+                    self.worker.decode_tokens(
+                        state.request.generated_tokens
+                    )
                 )
-            )
 
-            state.request.mark_finished()
+                state.request.mark_finished()
 
-            return state.request
+            return [
+                state.request
+                for state in states
+            ]
 
         finally:
 
-            self.cache.remove(
-                state.request.request_id
-            )
+            for state in states:
+
+                self.cache.remove(
+                    state.request.request_id
+                )

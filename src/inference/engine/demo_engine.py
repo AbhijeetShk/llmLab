@@ -1,6 +1,6 @@
 from .engine import InferenceEngine
-from .request import Request
 from .generation_state import GenerationState
+from .request import Request
 
 MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
@@ -10,23 +10,23 @@ states = []
 
 for i in range(3):
 
-    state = GenerationState(
+    states.append(
 
-        Request(
-            request_id=i,
-            prompt=f"Explain concept {i}",
-            max_new_tokens=10,
+        GenerationState(
+
+            Request(
+
+                request_id=i,
+                prompt=f"Explain transformers {i}",
+                max_new_tokens=10,
+            )
         )
     )
 
-    states.append(state)
+results = engine.generate_batch(states)
 
-for state in states:
+for request in results:
 
-    result = engine.generate(state)
-
-    print()
-
-    print(f"Request {state.request.request_id}")
-
-    print(result.generated_text)
+    print("=" * 60)
+    print(f"Request {request.request_id}")
+    print(request.generated_text)
