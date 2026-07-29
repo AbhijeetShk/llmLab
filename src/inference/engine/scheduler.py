@@ -22,7 +22,22 @@ class Scheduler:
             return None
 
         return self.queue.popleft()
+    
+    def next_batch(
+        self,
+        batch_size: int,
+    ):
 
+        batch = []
+
+        while self.queue and len(batch) < batch_size:
+
+            batch.append(
+                self.queue.popleft()
+            )
+
+        return batch
+    
     def reschedule(self, state: GenerationState):
         #reschedule an unfinished req to the end
         if not state.request.is_finished():

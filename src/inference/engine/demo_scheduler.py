@@ -4,29 +4,64 @@ from .generation_state import GenerationState
 
 scheduler = Scheduler()
 
-state1 = GenerationState(
-    Request(
-        request_id=1,
-        prompt="Explain LoRA."
+for i in range(5):
+
+    scheduler.submit(
+
+        GenerationState(
+
+            Request(
+                request_id=i,
+                prompt=f"Prompt {i}"
+            )
+        )
     )
+
+print(
+    "Queue size:",
+    scheduler.size(),
 )
 
-state2 = GenerationState(
-    Request(
-        request_id=2,
-        prompt="Explain RAG."
+print()
+batch = scheduler.next_batch(3)
+
+print("Batch:")
+
+for state in batch:
+
+    print(
+        state.request.request_id
     )
+
+print()
+
+print(
+    "Remaining:",
+    scheduler.size(),
 )
+# state1 = GenerationState(
+#     Request(
+#         request_id=1,
+#         prompt="Explain LoRA."
+#     )
+# )
 
-scheduler.submit(state1)
-scheduler.submit(state2)
+# state2 = GenerationState(
+#     Request(
+#         request_id=2,
+#         prompt="Explain RAG."
+#     )
+# )
 
-print("Queue size:", scheduler.size())
+# scheduler.submit(state1)
+# scheduler.submit(state2)
 
-state = scheduler.next()
+# print("Queue size:", scheduler.size())
 
-print("Dequeued:", state.request.request_id)
+# state = scheduler.next()
 
-scheduler.reschedule(state)
+# print("Dequeued:", state.request.request_id)
 
-print("Queue size after reschedule:", scheduler.size())
+# scheduler.reschedule(state)
+
+# print("Queue size after reschedule:", scheduler.size())
