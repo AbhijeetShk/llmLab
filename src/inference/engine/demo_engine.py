@@ -6,17 +6,27 @@ MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
 engine = InferenceEngine(MODEL_NAME)
 
-request = Request(
-    request_id=1,
-    prompt="Explain LoRA."
-)
+states = []
 
-state = GenerationState(request)
+for i in range(3):
 
-result = engine.generate(state)
+    state = GenerationState(
 
-print()
+        Request(
+            request_id=i,
+            prompt=f"Explain concept {i}",
+            max_new_tokens=10,
+        )
+    )
 
-print("Generated text:")
+    states.append(state)
 
-print(result.generated_text)
+for state in states:
+
+    result = engine.generate(state)
+
+    print()
+
+    print(f"Request {state.request.request_id}")
+
+    print(result.generated_text)

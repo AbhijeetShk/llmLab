@@ -79,6 +79,14 @@ class InferenceEngine:
         print(f"Generated token: {state.request.generated_length()}",end="\r",flush=True,)
 
 #full generation loop
+    def step_batch(
+        self,
+        states: list[GenerationState],):
+
+
+        for state in states:
+
+            self.step(state)
 
     def generate(
         self,
@@ -92,12 +100,12 @@ class InferenceEngine:
         try:
 
             while self.scheduler.has_requests():
+                batch = self.scheduler.next_batch(batch_size=4)
 
-                current_state = self.scheduler.next()
+                self.step(batch)
+                for state in batch:
 
-                self.step(current_state)
-
-                self.scheduler.reschedule(current_state)
+                    self.scheduler.reschedule(state)
 
             state.request.update_text(
                 self.worker.decode_tokens(
