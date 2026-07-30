@@ -12,6 +12,8 @@ class GenerationSession:
 
         self.engine = engine
         self.state = state
+        self._decoded_length = 0 #decode the accumulated sequence and emit only
+        # the newly generated suffix
 
     def start(self):
 
@@ -44,3 +46,12 @@ class GenerationSession:
         return self.engine.worker.decode_tokens(
             self.state.request.generated_tokens
         )
+    def next_text_chunk(self):
+
+        text = self.generated_text()
+
+        delta = text[self._decoded_length :]
+
+        self._decoded_length = len(text)
+
+        return delta

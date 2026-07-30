@@ -18,24 +18,22 @@ class StreamIterator:
 
     def __next__(self):
 
-        if self.session.is_finished():
-
-            raise StopIteration
-
         if not self.started:
 
             self.session.start()
 
             self.started = True
 
-        else:
+        while True:
+
+            delta = self.session.next_text_chunk()
+
+            if delta:
+
+                return delta
+
+            if self.session.is_finished():
+
+                raise StopIteration
 
             self.session.step()
-
-        token = self.session.current_token()
-
-        if token is None:
-
-            raise StopIteration
-
-        return token

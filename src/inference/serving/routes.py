@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from ..engine.request import Request
-
+from fastapi.responses import StreamingResponse
 from .schemas import (
     GenerateRequest,
     GenerateResponse,
@@ -36,4 +36,31 @@ def generate(
 
     return GenerateResponse(
         generated_text=response.generated_text,
+    )
+@router.post("/stream")
+def stream(
+    body: GenerateRequest,
+):
+
+    request = Request(
+        request_id=0,
+        prompt=body.prompt,
+        max_new_tokens=body.max_new_tokens,
+    )
+
+    iterator = server.stream(
+        request
+    )
+
+    def event_generator():
+
+        for chunk in iterator:
+
+            yield f"data: {chunk}\n\n"
+
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
     )
