@@ -1,20 +1,16 @@
-from typing import Iterator
-
-from src.inference.engine.engine import InferenceEngine
-from src.inference.engine.generation_state import GenerationState
+from .session import GenerationSession
 
 
 class StreamIterator:
 
     def __init__(
         self,
-        engine: InferenceEngine,
-        state: GenerationState,
+        session: GenerationSession,
     ):
 
-        self.engine = engine
+        self.session = session
 
-        self.state = state
+        self.started = False
 
     def __iter__(self):
 
@@ -22,32 +18,24 @@ class StreamIterator:
 
     def __next__(self):
 
-        if self.state.request.is_finished():
+        if self.session.is_finished():
 
             raise StopIteration
 
-        if self.state.last_token is None:
+        if not self.started:
 
-            self.engine.prefill(
-                self.state
-            )
+            self.session.start()
+
+            self.started = True
 
         else:
 
-            self.engine.step(
-                self.state
-            )
+            self.session.step()
 
-        token = self.state.last_token.item()
+        token = self.session.current_token()
 
-        if (
-            token
-            == self.engine.worker.tokenizer.eos_token_id
-        ):
+        if token is None:
 
-            self.state.request.mark_finished()
+            raise StopIteration
 
-        return self.engine.worker.tokenizer.decode(
-            [token],
-            skip_special_tokens=True,
-        )
+        return token
