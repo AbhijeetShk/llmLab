@@ -2,6 +2,7 @@ from ..engine.engine import InferenceEngine
 from ..engine.request import Request
 from ..engine.generation_state import GenerationState
 
+from .queue import RequestQueue
 from .session import GenerationSession
 from .stream import StreamIterator
 
@@ -17,6 +18,8 @@ class InferenceServer:
             model_name
         )
 
+        self.queue = RequestQueue()
+
     def create_session(
         self,
         request: Request,
@@ -31,12 +34,27 @@ class InferenceServer:
             state,
         )
 
-    def generate(
+    def _acquire_session(
         self,
         request: Request,
     ):
 
         session = self.create_session(
+            request
+        )
+
+        self.queue.push(
+            session
+        )
+
+        return self.queue.pop()
+
+    def generate(
+        self,
+        request: Request,
+    ):
+
+        session = self._acquire_session(
             request
         )
 
@@ -59,7 +77,7 @@ class InferenceServer:
         request: Request,
     ):
 
-        session = self.create_session(
+        session = self._acquire_session(
             request
         )
 
