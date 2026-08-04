@@ -49,6 +49,7 @@ class InferenceServer:
 
         return self.queue.pop()
 
+
     def generate(
         self,
         request: Request,
@@ -71,6 +72,33 @@ class InferenceServer:
         request.mark_finished()
 
         return request
+    
+
+    def generate_batch(
+        self,
+        requests: list[Request],
+        ):
+
+        for request in requests:
+
+            session = self.create_session(
+                request
+            )
+
+            self.queue.push(session)
+
+        batch = self.queue.pop_batch(
+            batch_size=len(requests),)
+        
+        states = [
+            session.state
+        for session in batch]
+
+        responses = self.engine.generate_batch(
+            states
+        )
+        return responses
+        
 
     def stream(
         self,

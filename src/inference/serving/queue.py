@@ -18,10 +18,28 @@ class RequestQueue:
 
     def pop(self):
 
-        if not self._queue:
+        if self.empty():
             return None
 
         return self._queue.popleft()
+
+
+    def pop_batch(
+     self,
+        batch_size,):
+
+        batch = []
+
+        while (
+            not self.empty()
+            and len(batch) < batch_size
+        ):
+
+            batch.append(
+                self._queue.popleft()
+            )
+
+        return batch
 
     def empty(self):
 
