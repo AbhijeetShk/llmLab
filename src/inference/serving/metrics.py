@@ -6,10 +6,20 @@ class InferenceMetrics:
 
     request_id: int
 
-    ttft_ms: float
-
-    latency_ms: float
+    input_tokens: int
 
     output_tokens: int
 
-    tokens_per_second: float
+    total_tokens: int
+
+    ttft_ms: float
+
+    prefill_ms: float
+
+    decode_ms: float
+
+    latency_ms: float
+
+    decode_tokens_per_second: float
+
+    overall_tokens_per_second: float

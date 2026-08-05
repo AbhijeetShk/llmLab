@@ -125,21 +125,21 @@ class InferenceServer:
             request
         )
 
+        input_ids = self.engine.worker.encode(
+            request.prompt
+        )
+
+        input_tokens = input_ids.shape[-1]
+
         session.start()
 
-        ttft = (
-            time.perf_counter()
-            - start
-        ) * 1000
+        prefill_end = time.perf_counter()
 
         while not session.is_finished():
 
             session.step()
 
-        latency = (
-            time.perf_counter()
-            - start
-        ) * 1000
+        end = time.perf_counter()
 
         request.update_text(
             session.generated_text()
@@ -149,28 +149,64 @@ class InferenceServer:
 
         output_tokens = request.generated_length()
 
-        generation_time = max(
-            latency - ttft,
-            1e-6,
+        total_tokens = (
+            input_tokens
+            + output_tokens
         )
 
-        tokens_per_second = (
+        prefill_ms = (
+            prefill_end - start
+        ) * 1000
+
+        decode_ms = (
+            end - prefill_end
+        ) * 1000
+
+        latency_ms = (
+            end - start
+        ) * 1000
+
+        ttft_ms = prefill_ms
+
+        decode_tokens_per_second = (
             output_tokens
             /
-            (generation_time / 1000)
+            max(
+                decode_ms / 1000,
+                1e-6,
+            )
+        )
+
+        overall_tokens_per_second = (
+            output_tokens
+            /
+            max(
+                latency_ms / 1000,
+                1e-6,
+            )
         )
 
         metrics = InferenceMetrics(
 
             request_id=request.request_id,
 
-            ttft_ms=ttft,
-
-            latency_ms=latency,
+            input_tokens=input_tokens,
 
             output_tokens=output_tokens,
 
-            tokens_per_second=tokens_per_second,
+            total_tokens=total_tokens,
+
+            ttft_ms=ttft_ms,
+
+            prefill_ms=prefill_ms,
+
+            decode_ms=decode_ms,
+
+            latency_ms=latency_ms,
+
+            decode_tokens_per_second=decode_tokens_per_second,
+
+            overall_tokens_per_second=overall_tokens_per_second,
         )
 
         return request, metrics
