@@ -51,73 +51,11 @@ class InferenceServer:
 
         return self.queue.pop()
 
-
-    def generate(
+    def _execute(
         self,
         request: Request,
+        collect_metrics: bool = False,
     ):
-
-        session = self._acquire_session(
-            request
-        )
-
-        session.start()
-
-        while not session.is_finished():
-
-            session.step()
-
-        request.update_text(
-            session.generated_text()
-        )
-
-        request.mark_finished()
-
-        return request
-    
-
-    def generate_batch(
-        self,
-        requests: list[Request],
-        ):
-
-        for request in requests:
-
-            session = self.create_session(
-                request
-            )
-
-            self.queue.push(session)
-
-        batch = self.queue.pop_batch(
-            batch_size=len(requests),)
-        
-        states = [
-            session.state
-        for session in batch]
-
-        responses = self.engine.generate_batch(
-            states
-        )
-        return responses
-        
-
-    def stream(
-        self,
-        request: Request,
-    ):
-
-        session = self._acquire_session(
-            request
-        )
-
-        return StreamIterator(
-            session
-        )
-    def measure(
-    self,
-    request: Request,
-):
 
         start = time.perf_counter()
 
@@ -146,6 +84,10 @@ class InferenceServer:
         )
 
         request.mark_finished()
+
+        if not collect_metrics:
+
+            return request
 
         output_tokens = request.generated_length()
 
@@ -210,3 +152,61 @@ class InferenceServer:
         )
 
         return request, metrics
+    def generate(
+        self,
+        request: Request,
+    ):
+
+        return self._execute(
+            request,
+            collect_metrics=False,
+        )
+    
+
+    def generate_batch(
+        self,
+        requests: list[Request],
+        ):
+
+        for request in requests:
+
+            session = self.create_session(
+                request
+            )
+
+            self.queue.push(session)
+
+        batch = self.queue.pop_batch(
+            batch_size=len(requests),)
+        
+        states = [
+            session.state
+        for session in batch]
+
+        responses = self.engine.generate_batch(
+            states
+        )
+        return responses
+        
+
+    def stream(
+        self,
+        request: Request,
+    ):
+
+        session = self._acquire_session(
+            request
+        )
+
+        return StreamIterator(
+            session
+        )
+    def measure(
+        self,
+        request: Request,
+    ):
+
+        return self._execute(
+            request,
+            collect_metrics=True,
+        )
