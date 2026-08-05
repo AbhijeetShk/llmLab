@@ -5,7 +5,9 @@ from ..engine.generation_state import GenerationState
 from .queue import RequestQueue
 from .session import GenerationSession
 from .stream import StreamIterator
+import time
 
+from .metrics import InferenceMetrics
 
 class InferenceServer:
 
@@ -112,3 +114,63 @@ class InferenceServer:
         return StreamIterator(
             session
         )
+    def measure(
+    self,
+    request: Request,
+):
+
+        start = time.perf_counter()
+
+        session = self._acquire_session(
+            request
+        )
+
+        session.start()
+
+        ttft = (
+            time.perf_counter()
+            - start
+        ) * 1000
+
+        while not session.is_finished():
+
+            session.step()
+
+        latency = (
+            time.perf_counter()
+            - start
+        ) * 1000
+
+        request.update_text(
+            session.generated_text()
+        )
+
+        request.mark_finished()
+
+        output_tokens = request.generated_length()
+
+        generation_time = max(
+            latency - ttft,
+            1e-6,
+        )
+
+        tokens_per_second = (
+            output_tokens
+            /
+            (generation_time / 1000)
+        )
+
+        metrics = InferenceMetrics(
+
+            request_id=request.request_id,
+
+            ttft_ms=ttft,
+
+            latency_ms=latency,
+
+            output_tokens=output_tokens,
+
+            tokens_per_second=tokens_per_second,
+        )
+
+        return request, metrics
