@@ -104,6 +104,14 @@ class InferenceServer:
             end - prefill_end
         ) * 1000
 
+        average_decode_time_ms = (
+            decode_ms
+            /
+            max(
+                output_tokens,
+                1,
+            )
+        )
         latency_ms = (
             end - start
         ) * 1000
@@ -145,6 +153,8 @@ class InferenceServer:
             decode_ms=decode_ms,
 
             latency_ms=latency_ms,
+            
+            average_decode_time_ms=average_decode_time_ms,
 
             decode_tokens_per_second=decode_tokens_per_second,
 

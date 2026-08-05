@@ -20,6 +20,8 @@ class InferenceMetrics:
 
     latency_ms: float
 
+    average_decode_time_ms: float
+    
     decode_tokens_per_second: float
 
     overall_tokens_per_second: float

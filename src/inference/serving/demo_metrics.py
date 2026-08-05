@@ -44,6 +44,11 @@ print(f"Prefill Time              : {metrics.prefill_ms:.2f} ms")
 
 print(f"Decode Time               : {metrics.decode_ms:.2f} ms")
 
+print(
+    f"Average Decode / Token    : "
+    f"{metrics.average_decode_time_ms:.2f} ms"
+)
+
 print(f"End-to-End Latency        : {metrics.latency_ms:.2f} ms")
 
 print()
