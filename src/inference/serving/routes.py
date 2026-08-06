@@ -9,6 +9,8 @@ from .schemas import (
     ChatCompletionResponse,
     ChatMessage,
     Choice,
+    ModelInfo,
+    ModelsResponse,
 )
 from .server import InferenceServer
 import uuid
@@ -140,3 +142,24 @@ def health():
         "model": server.engine.worker.model_name,
         "device": str(server.engine.worker.device),
     }
+
+@router.get(
+    "/v1/models",
+    response_model=ModelsResponse,
+)
+def list_models():
+
+    return ModelsResponse(
+
+        data=[
+
+            ModelInfo(
+
+                id=server.engine.worker.model_name,
+
+                owned_by="llm-lab",
+            )
+
+        ]
+
+    )

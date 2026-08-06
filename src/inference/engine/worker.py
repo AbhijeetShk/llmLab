@@ -15,7 +15,6 @@ class ModelWorker:
     ):
 
         self.model_name = model_name
-        self.device = self.model.device
         self.device = (
             device
             if device
@@ -33,6 +32,7 @@ class ModelWorker:
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name
         ).to(self.device)
+        self.device = self.model.device
         self.model.eval()
 
 

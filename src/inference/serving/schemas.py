@@ -47,3 +47,18 @@ class ChatCompletionResponse(BaseModel):
     object: str
 
     choices: list[Choice]
+
+class ModelInfo(BaseModel):
+
+    id: str
+
+    object: str = "model"
+
+    owned_by: str
+
+
+class ModelsResponse(BaseModel):
+
+    object: str = "list"
+
+    data: list[ModelInfo]
