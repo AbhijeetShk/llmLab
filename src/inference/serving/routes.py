@@ -125,9 +125,18 @@ def chat_completion(
     )
 
     response_id = f"chatcmpl-{uuid.uuid4().hex}"
-    
+
     return ChatCompletionResponse(
         id=response_id,
         object="chat.completion",
         choices=[choice],
     )
+
+@router.get("/health")
+def health():
+
+    return {
+        "status": "healthy",
+        "model": server.engine.worker.model_name,
+        "device": str(server.engine.worker.device),
+    }
